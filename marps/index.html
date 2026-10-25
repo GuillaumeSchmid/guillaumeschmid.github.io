@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Marps</title>
+    
+<script type="module">
+import init, * as bindings from './marps-6b96d362d5969a4c.js';
+const wasm = await init({ module_or_path: './marps-9be62b52894fd163_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+    <style>
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #1b1b1b; }
+        #marps { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+        #loading {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            color: #ccc; font: 16px system-ui, sans-serif;
+        }
+    </style>
+<link rel="modulepreload" href="./marps-6b96d362d5969a4c.js" crossorigin="anonymous" integrity="sha384-fbMq4SgPQxLbZF03EFSpv5+aVcOsWanKB53poSpIn077oTkfxCF/kfUTkPCX3Bxj"><link rel="preload" href="./marps-9be62b52894fd163_bg.wasm" crossorigin="anonymous" integrity="sha384-tMQV8S4k4tIIp6+mjGRF6RhFTuLfE5m7Nm/yGtOELz64rhNfmx66cUuPtAfp0crI" as="fetch" type="application/wasm"></head>
+<body>
+    <canvas id="marps"></canvas>
+    <div id="loading">Loading Marps…</div>
+    <script>
+        // Browsers refuse to load the wasm module from file://, which would leave the page stuck loading.
+        if (location.protocol === "file:") {
+            document.getElementById("loading").textContent =
+                "Marps must be served over HTTP — run `trunk serve --open`, or `python3 -m http.server -d dist` and open http://localhost:8000/";
+        }
+    </script>
+</body>
+</html>
